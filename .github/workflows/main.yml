@@ -26,3 +26,24 @@ jobs:
 
     - name: List the file
       run: ls -al build
+
+    - name: Create Tar Archive
+      run: tar -czvf landmarksbuild.tar build
+
+    - name: Push to Artifactory
+      run: |
+           curl -u rs.sridharvenkat@gmail.com:cmVmdGtuOjAxOjE3NDcxMjg4MzI6dnVINk5LVHU3bHJielFiRGVqVHM2ZkFqRGpy -X PUT "https://cpss.jfrog.io/artifactory/actions/landmarksbuild.tar" -T landmarksbuild.tar
+
+    - name: Deploy to EC2 Instance
+      uses: appleboy/ssh-action@master
+      with:
+          host: ${{ secrets.EC2_HOST }}
+          username: ${{ secrets.EC2_USERNAME }}
+          key: ${{ secrets.SSH_PRIVATE_KEY }}
+          port: ${{ secrets.EC2_SSH_PORT }}
+          script: |
+            echo "Logged in successfully"
+            curl -L -u rs.sridharvenkat@gmail.com:cmVmdGtuOjAxOjE3NDcxMjg4MzI6dnVINk5LVHU3bHJielFiRGVqVHM2ZkFqRGpy -O "https://cpss.jfrog.io/artifactory/actions/landmarksbuild.tar"
+            tar -xzvf landmarksbuild.tar
+            sudo mv build/* /var/www/html
+            sudo chmod -R 755 /var/www/html/* 
