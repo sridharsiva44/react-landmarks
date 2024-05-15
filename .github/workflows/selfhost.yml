@@ -7,7 +7,7 @@ on:
 
 jobs:
   build:
-    runs-on: self-hosted [EC2-Runner]
+    runs-on: self-hosted[EC2-Runner]
     steps:
     - name: Checkout code
       uses: actions/checkout@v3
