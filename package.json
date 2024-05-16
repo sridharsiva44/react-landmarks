@@ -1,6 +1,7 @@
+
 {
   "name": "react-landmarks",
-  "version": "0.1.0",
+  "version": "0.0.1",
   "private": true,
   "dependencies": {
     "@types/node": "^18.15.5",
